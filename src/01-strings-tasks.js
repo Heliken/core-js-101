@@ -228,8 +228,28 @@ function getRectangleString(width, height) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const alphabetUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const alphabetLower = 'abcdefghijklmnopqrstuvwxyz';
+  let newStr = '';
+  for (let i = 0; i < str.length; i += 1) {
+    let currAlph;
+    if (alphabetUpper.indexOf(str[i]) > -1) {
+      currAlph = alphabetUpper;
+    } else if (alphabetLower.indexOf(str[i]) > -1) {
+      currAlph = alphabetLower;
+    } else {
+      newStr += str[i];
+    }
+    if (currAlph !== undefined) {
+      const alphLength = currAlph.length;
+      const originalIndex = currAlph.indexOf(str[i]);
+      let newIndex = originalIndex + 13;
+      newIndex = newIndex > alphLength - 1 ? newIndex - alphLength : newIndex;
+      newStr += currAlph[newIndex];
+    }
+  }
+  return newStr;
 }
 
 /**
@@ -245,8 +265,8 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
 }
 
 
@@ -274,8 +294,45 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  let cardValue = value.slice(0, -1);
+  const suit = value[value.length - 1];
+  let suitMultiplier;
+  if (Number.isNaN(Number(cardValue))) {
+    switch (cardValue) {
+      case 'A':
+        cardValue = 1;
+        break;
+      case 'J':
+        cardValue = 11;
+        break;
+      case 'Q':
+        cardValue = 12;
+        break;
+      case 'K':
+        cardValue = 13;
+        break;
+      default:
+        break;
+    }
+  }
+  switch (suit) {
+    case '♣':
+      suitMultiplier = 0;
+      break;
+    case '♦':
+      suitMultiplier = 1;
+      break;
+    case '♥':
+      suitMultiplier = 2;
+      break;
+    case '♠':
+      suitMultiplier = 3;
+      break;
+    default:
+      break;
+  }
+  return (Number(cardValue)) - 1 + suitMultiplier * 13;
 }
 
 
