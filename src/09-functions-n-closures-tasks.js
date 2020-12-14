@@ -170,6 +170,18 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(/* startFrom */) {
+  /*
+  return function getId(startFrm = startFrom) {
+    let counter;
+    if (startFrm !== undefined) {
+      counter = startFrm;
+    } else {
+      counter += 1;
+      return counter;
+    }
+    return this;
+  };
+  */
   throw new Error('Not implemented');
 }
 
